@@ -4,7 +4,9 @@ The file BlanchClemmDoublePoints.maple is a Maple Workbook which contains code t
 
 The Workbook also contains my code to evaluate Mathieu eigenvalues/eigenfunctions, and to solve the Mathieu equation more generally by a Hermite-Obreschkoff method.  That code is not meant for automatic use but rather in a human-supervised way; currently that usage is not described.  I really should add a worksheet or two describing it and giving examples.
 
-The file is intended to be used with Maple version 2020 or later, but might be usable with earlier versions.  If you do not have Maple, you can at least read the file by downloading the free Maple Player 
+The file is intended to be used with Maple version 2020 or later, but might be usable with earlier versions.  If you do not have Maple, you can at least read the file by downloading the free Maple Player.
+
+This repo also contains a copy of Robert Moir's translation to English of Mathieu's original 1868 Memoire.
 
 The BigDoublesTable.csv file contains the 32 digit precision coefficients for the Puiseux series about each of the Blanch and Clemm double points.
 
