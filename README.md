@@ -6,6 +6,8 @@ The Workbook also contains my code to evaluate Mathieu eigenvalues/eigenfunction
 
 The file is intended to be used with Maple version 2020 or later, but might be usable with earlier versions.  If you do not have Maple, you can at least read the file by downloading the free Maple Player.
 
+A similar file called MathieuTalk.maple contains the slides (and code etc) for my upcoming talk on Mathieu functions at Newcastle.
+
 This repo also contains a copy of Robert Moir's translation to English of Mathieu's original 1868 Memoire.
 
 The BigDoublesTable.csv file contains the 32 digit precision coefficients for the Puiseux series about each of the Blanch and Clemm double points.
