@@ -226,8 +226,8 @@ FlowQuantities := proc( f_e, omeg, alpha, beta, asp_ratio, eccentri, E, activebo
     option remember;
     ans := 0.;
     for k from 0 to N do
-      C := deval(Cesp[k], 'x' = xi0*I, 'nder' = 1);
-      ans := Xpansionp[k]^2*I2loca[k]*C[0]*C[1] + ans;
+      C := deval(Cesp[k], 'x' = xi0*I, ':-nder' = 1);
+      ans := Xpansionp[k]^2*I2loca[k]*C[0]*C[1]*I + ans; # CHAIN RULE
     end do;
     return 8*(1 - tanh(2*xi0)*ans/evalf(Pi*lambdae*I))/(lambdae*I);
   end proc;
@@ -241,9 +241,9 @@ FlowQuantities := proc( f_e, omeg, alpha, beta, asp_ratio, eccentri, E, activebo
     ans := 0.;
     delta := focu*sqrt(cosh(xi0)^2 - cos(eta)^2);
     for k from 0 to N do
-      C := deval(Cesp[k], 'x' = xi0*I, 'nder' = 1);
+      C := deval(Cesp[k], 'x' = xi0*I, ':-nder' = 1);
       c := deval(cesp[k], 'x' = eta);
-      ans := Xpansionp[k]*C[1]*c + ans;
+      ans := Xpansionp[k]*C[1]*c*I + ans;  # CHAIN RULE
     end do;
     return 2/(lambdae*I)*ans/delta;
   end proc;
