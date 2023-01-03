@@ -56,7 +56,7 @@ Passive := proc( f_e, omeg )
   local alpha, asp_ratio, beta, E, eccentri, t, g;
   global confracf, Refine, radius, rho, mu;
   eccentri := fsolve( Pi*sqrt(1-t^2)/(2*EllipticE(t))- f_e, t );
-  E := EllipticE(t);
+  E := EllipticE(eccentri);
   g := Pi/(2*E);
   beta  := f_e*radius;
   alpha := g*radius;
@@ -110,9 +110,9 @@ end proc:
 
 
 FlowQuantities := proc( f_e, omeg, alpha, beta, asp_ratio, eccentri, E, activeboolean )
-  local A, AE, AS, ASE, As, Ces, I2loca, Lambda, OsclltryFlwRt, XpansionCoeffs, 
+  local A, AE, AS, ASE, As, Ces, I2loca, Lambda_e, OsclltryFlwRt, XpansionCoeffs, 
         answer, ces, cesnosquareIntegrated, cesq, cesqIntegrated, foc, j, k, 
-        lambda, ndegtayl, qlocal, rtol, shrstrss, sigma, strsss, w, wa, wma, xi;
+        lambda_e, ndegtayl, qlocal, rtol, shrstrss, sigma, strsss, w, wa, wma, xi;
 
   global N, Refine, confracf, mu, radius, rho;
 
@@ -136,10 +136,10 @@ FlowQuantities := proc( f_e, omeg, alpha, beta, asp_ratio, eccentri, E, activebo
   foc := alpha*eccentri;
   answer:-focus := foc;
   sigma := sqrt(2/(1/alpha^2 + 1/beta^2));
-  lambda[e] := rho*omeg*sigma^2/mu;
-  answer:-lambdae := lambda[e];
-  Lambda[e] := rho*omeg*foc^2/mu;
-  qlocal := -Lambda[e]*I/4;
+  lambda_e := rho*omeg*sigma^2/mu;
+  answer:-lambdae := lambda_e;
+  Lambda_e := rho*omeg*foc^2/mu;
+  qlocal := -Lambda_e*I/4;
   xi[0] := arccosh(alpha/foc);
   answer:-xi0 := xi[0];
   answer:-q := qlocal;
@@ -219,7 +219,7 @@ FlowQuantities := proc( f_e, omeg, alpha, beta, asp_ratio, eccentri, E, activebo
   end proc;
  
   answer:-w := eval(w);
-  answer:-max_velocity := abs(w(0, evalf(Pi/2), Ces, ces, XpansionCoeffs, lambda[e] ));
+  answer:-max_velocity := abs(w(0, evalf(Pi/2), Ces, ces, XpansionCoeffs, lambda_e ));
   # Should pass parameters in if we're going to return the procedure out of this scope
   OsclltryFlwRt := proc(  Cesp, cesp, Xpansionp, lambdae, I2p, xi0 )
     local  k, ans, C;
@@ -234,7 +234,7 @@ FlowQuantities := proc( f_e, omeg, alpha, beta, asp_ratio, eccentri, E, activebo
   
   answer:-OscillatoryFlowRate :=  eval(OsclltryFlwRt);
   answer:-max_flow_rate := abs(OsclltryFlwRt( Ces, ces, XpansionCoeffs, 
-                                              lambda[e], I2loca, xi[0] ));
+                                              lambda_e, I2loca, xi[0] ));
   shrstrss := proc(eta,  Cesp, cesp, Xpansionp, lambdae, xi0, focu )
     local delta, k, ans, c, C;
     option remember;
@@ -250,9 +250,9 @@ FlowQuantities := proc( f_e, omeg, alpha, beta, asp_ratio, eccentri, E, activebo
   
   answer:-shearstress := eval(shrstrss);
   # Probably not necessary.  Max always occurs at pi/2
-  strsss := seq(abs(shrstrss(evalf(k*Pi/20), Ces, ces, XpansionCoeffs, lambda[e], xi[0], foc)), k = 0 .. 20);
-  answer:-max_wall_shear_stress := abs( shrstrss(evalf(Pi/2), Ces, ces, XpansionCoeffs, lambda[e], xi[0], foc) );
-  answer:-min_wall_shear_stress := abs( shrstrss(0.0, Ces, ces, XpansionCoeffs, lambda[e], xi[0], foc) );
+  strsss := seq(abs(shrstrss(evalf(k*Pi/20), Ces, ces, XpansionCoeffs, lambda_e, xi[0], foc)), k = 0 .. 20);
+  answer:-max_wall_shear_stress := abs( shrstrss(evalf(Pi/2), Ces, ces, XpansionCoeffs, lambda_e, xi[0], foc) );
+  answer:-min_wall_shear_stress := abs( shrstrss(0.0, Ces, ces, XpansionCoeffs, lambda_e, xi[0], foc) );
   answer:-stresses := strsss;
   
   return answer;
